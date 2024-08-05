@@ -1,0 +1,15 @@
+.venv\Scripts\activate
+
+pip install --upgrade pip setuptools wheel
+pip install langchain-community
+pip install networkx
+pip install python-magic-bin
+pip install "unstructured[pdf]"
+
+https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170
+
+pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cpu
+
+pip install sentence-transformers
+
+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

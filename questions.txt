@@ -1,0 +1,12 @@
+Am just thinking about their original queries. If the model is trained on the transactions, customers and the attributes.
+For example:
+Do customers buy Overheads with Valves:
+e.g How many orders of overhead showers are placed WITHOUT shower valves ?
+We’d be looking for the number of Order numbers that have Overheads in the order, but no shower valves.
+we would want to know what product is on each order, BUT – we will also have to take into account whether the same account buys certain items separately.
+e.g. They buy the shower valve in bulk, but they buy the shower heads individually?
+8:53
+How many orders of hand showers / slide rail kits are placed WITHOUT a shower valve ?
+How many orders of hand showers / slide rail kits are placed WITH MATCHING SHAPED shower valves ? (Exposed / Concealed) This seems a strange request but there is a very firm opinion that matching the shape of valves to showers is a big deal. We don’t actually know that it is !!
+8:53
+We might have to index the transactions, the order numbers and the customers, or we might already have done so.
