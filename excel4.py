@@ -16,15 +16,15 @@ from langchain.prompts import PromptTemplate
 import pickle
 
 
-# llm = Ollama(
-#     model="llama3",
-#     temperature=0  # Increased temperature to encourage more diverse responses
-# )
+llm = Ollama(
+    model="llama3",
+    temperature=0  # Increased temperature to encourage more diverse responses
+)
 
-# llm = Ollama(
-#     model="gemma2:2b",
-#     temperature=0  # Increased temperature to encourage more diverse responses
-# )
+llm = Ollama(
+    model="gemma2:2b",
+    temperature=0  # Increased temperature to encourage more diverse responses
+)
 
 llm = ChatGroq(
         groq_api_key=GROQ_API_KEY, model_name="llama3-8b-8192", temperature=0

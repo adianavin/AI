@@ -1,0 +1,107 @@
+Below are several sample user questions related to the MongoDB document provided, 
+and the corresponding MongoDB aggregation pipeline queries that can be used to fetch the desired data.
+Use them wisely.
+
+Question 1:How many bath faucets are there?
+
+Query:
+json
+[
+  { "$match": { "Categories_value": "Bath Faucets" } },
+  { "$count": "total_count" }
+]
+
+
+Question 2: What are the differnt product sub-categories?
+
+Query:
+json
+[
+  {
+    "$group": {
+      "_id": "$Categories_value"  
+    }
+  },
+  {
+    "$project": {
+      "Categories_value": "$_id",  
+      "_id": 0                          
+    }
+  }
+]
+
+
+Question 3: give me list of product sub category where in product title "Q" is present
+
+Query:
+json
+[
+  {
+    "$match": {
+      "Product Title": {
+        "$regex": "\\bQ\\b",
+        "$options": "i"
+      }
+    }
+  },
+  {
+    "$group": {
+      "_id": "$Categories_value"
+    }
+  },
+  {
+    "$project": {
+      "Product sub-category": "$_id",
+      "_id": 0
+    }
+  }
+]
+
+Question 4: How many Bath faucets sold and what is sales in 2024 in total ?
+
+Query:
+json
+[
+  { 
+    "$match": { 
+      "Product sub-category": "Bath Faucets"  
+    } 
+  },
+  {
+    "$lookup": {
+      "from": "transactions",
+      "localField": "Material",
+      "foreignField": "Material",
+      "as": "transactions"
+    }
+  },
+  { 
+    "$unwind": "$transactions" 
+  },
+  {
+    "$match": {
+      "transactions.Calendar Year/Month": { "$regex": "2024" }  
+    }
+  },
+  {
+    "$group": {
+      "_id": null,  
+      "total_sales": {
+        "$sum": "$transactions.Sales"  
+      },
+      "total_volumes": {
+        "$sum": "$transactions.Volumes"  
+      }
+    }
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "sales": { "$round": ["$total_sales", 0] },  
+      "qty": { "$round": ["$total_volumes", 0] } 
+    }
+  }
+]
+
+Each of these queries is designed to run within MongoDB's aggregation framework to extract specific information based on the user's questions.
+ The `$project` step is used to format the output to include only relevant fields. 
