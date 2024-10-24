@@ -1,0 +1,109 @@
+Below are several sample user questions related to the MongoDB document provided, 
+and the corresponding MongoDB aggregation pipeline queries that can be used to fetch the desired data.
+Use them wisely.
+
+Question 1:How many bath faucets are there?
+
+Query:
+json
+[
+  { "$match": { "Categories_value": "Bath Faucets" } },
+  { "$count": "total_count" }
+]
+
+
+Question 2: What are the differnt product sub-categories?
+
+Query:
+json
+[
+  {
+    "$group": {
+      "_id": "$Categories_value"  
+    }
+  },
+  {
+    "$project": {
+      "Categories_value": "$_id",  
+      "_id": 0                          
+    }
+  }
+]
+
+
+Question 3: Sales of Bath Faucets for the year 2023 and 2024
+
+Query:
+json
+[
+    {
+        "$match": {
+            "Categories_value": "Bath Faucets",
+            "month_year": {
+                "$regex": "2023|2024"
+            }
+        }
+    },
+    {
+        "$addFields": {
+            "year": {
+                "$substr": ["$month_year", 4, 4]
+            }
+        }
+    },
+    {
+        "$group": {
+            "_id": {
+                "year": "$year"
+            },
+            "total_sales": { "$sum": "$sales" },
+            "total_volume": { "$sum": "$Volume" }
+        }
+    },
+    {
+        "$sort": {
+            "_id.year": 1
+        }
+    },
+    {
+    $project: {
+      "_id":0,
+      "year":"$_id.year",
+      "total_sales":1,
+     "total_volume":1 
+    }
+  }
+]
+
+Question 4: Give me the count of no of holes in bath faucets
+Query
+json
+[
+    {
+        "$match": {
+            "Categories_value": "Bath Faucets"
+        }
+    },
+    {
+        "$group": {
+            "_id": "$No of Holes_value", 
+            "count": { "$sum": 1 } 
+        }
+    },
+    {
+        "$project": {
+            "No_of_Holes": "$_id",  
+            "count": 1,
+            "_id": 0  
+        }
+    },
+    {
+        "$sort": {
+            "No_of_Holes": 1  
+        }
+    }
+]
+
+
+Each of these queries is designed to run within MongoDB's aggregation framework to extract specific information based on the user's questions.
+Please include '$project' stage in each pipeline to have meaningfull output. The `$project` step is used to format the output to include only relevant fields. 
