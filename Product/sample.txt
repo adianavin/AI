@@ -1,0 +1,73 @@
+Below are several sample user questions related to the MongoDB document provided, 
+and the corresponding MongoDB aggregation pipeline queries that can be used to fetch the desired data.
+Use them wisely.
+
+Question 1:Give me the details of the Material 1000180.
+
+Query:
+json
+[
+  { "$match": { "Material":1000180 } }
+]
+
+
+Question 2: How many products are there in Bath Faucets
+
+Query:
+json
+[
+    { "$match": { "Product sub-category":"Bath Faucets" } }
+  ,
+  { 
+    "$count": "totalBathFaucets" 
+  }
+]
+
+
+Question 3: How many products are there in each Product sub category
+
+Query:
+json
+[
+  {
+    "$group": {
+      "_id": "$Product sub-category",  
+      "count": { "$sum": 1 }           
+    }
+  },
+  {
+    "$project": {
+      "Product sub-category": "$_id",  
+      "count": 1,                      
+      "_id": 0                         
+    }
+  }
+]
+
+Question 4: Give me the count of products of Mounting in bath faucets
+Query
+json
+[
+  {
+    "$match": {
+      "Product sub-category":"Bath Faucets"
+    }
+  },
+  {
+    "$group": {
+      "_id": "$Mounting",  
+      "count": { "$sum": 1 }           
+    }
+  },
+  {
+    "$project": {
+      "Product sub-category": "$_id",  
+      "count": 1,                      
+      "_id": 0                         
+    }
+  }
+]
+
+
+Each of these queries is designed to run within MongoDB's aggregation framework to extract specific information based on the user's questions.
+Please include '$project' stage in each pipeline to have meaningfull output. The `$project` step is used to format the output to include only relevant fields. 
